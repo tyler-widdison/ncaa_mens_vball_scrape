@@ -240,3 +240,11 @@ for u in urls:
         continue
 
 df_boxscore_links = pd.DataFrame(match_ids)
+df_boxscore_links = df_boxscore_links['0'].to_frame()
+tt = df_boxscore_links['0'].str.split('/',4,expand=True).rename(columns={0:"a", 1:"a.5", 2:"b", 3:"c", 4:"d"})
+tt['url'] = 'https://data.ncaa.com/casablanca/game/'
+tt['url2'] = '/boxscore.json'
+df_boxscore_links['json_links'] = tt[['url', 'd', 'url2']].agg(''.join,axis=1).to_frame()
+df_boxscore_links = df_boxscore_links.rename(columns={'0': 'match_link'})
+df_boxscore_links.to_csv('ncaa_m_links.csv')
+
