@@ -10,7 +10,7 @@ import requests
 # get box score links from date links csv
 df_date = pd.read_csv('ncaa_m_vball_date_links.csv')
 
-url = df_date['link'][1:3] 
+url = df_date['link'][1:3] # only 2 links for testing. Remove the 3 to get everything
 
 res = requests.get(url)
 soup = BeautifulSoup(res.text, 'html.parser')
