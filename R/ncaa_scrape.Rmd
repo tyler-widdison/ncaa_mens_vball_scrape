@@ -5,6 +5,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
 #libaries
 library(tidyverse)
 library(rvest)
@@ -52,7 +55,7 @@ get_links <- function(page) {
 
 ```{r}
 # get box score links
-ncaa_box_score_links <- bind_rows(map(ncaa$page[1:40], get_links))
+ncaa_box_score_links <- bind_rows(map(ncaa$page, get_links))
 ncaa_box_score_links <- unique(ncaa_box_score_links$urls)
 ```
 
@@ -79,7 +82,7 @@ get_text <- function(page){
   }
 
 
-df <- map(ncaa_box_score_links, get_text) %>% bind_rows()
+df <- map(ncaa_box_score_links[1:500], get_text) %>% bind_rows()
 ```
 
 
@@ -92,7 +95,19 @@ box_score_df <-  df %>%
   mutate(MS = substr(MS, 1,1) %>% as.numeric()) %>% 
   mutate(S = S %>% as.numeric()) %>% 
   mutate(Pct = Pct %>% as.numeric()) %>% 
-  mutate(Assists = str_replace_all(Assists, '\\*', '') %>% as.numeric(),
+  mutate(Assists = str_replace_all(Assists, '\\*-/', '') %>% as.numeric(),
+                                        Kills = str_replace_all(Kills, '\\*-/', '') %>% as.numeric(),
+                                        Errors = str_replace_all(Errors, '\\*-/', '') %>% as.numeric(),
+                                        `Total Attacks` = str_replace_all(`Total Attacks`, '\\*-/', '') %>% as.numeric(),
+                                        Aces = str_replace_all(Aces, '\\*-/', '') %>% as.numeric(),
+                                        PTS = str_replace_all(PTS, '\\*-/', '') %>% as.numeric(),
+                                        SErr = str_replace_all(SErr, '\\*-/', '') %>% as.numeric(),
+                                        Digs = str_replace_all(Digs, '\\*-/', '') %>% as.numeric(),
+                                        `Block Solos` = str_replace_all(`Block Solos`, '\\*-/', '') %>% as.numeric(),
+                                        `Block Assists` = str_replace_all(`Block Assists`, '\\*-/', '') %>% as.numeric(),
+                                        BErr = str_replace_all(BErr, '\\*-/', '') %>% as.numeric(),
+                                        BHE = str_replace_all(BHE, '\\*-/', '') %>% as.numeric(),
+                                        Assists = str_replace_all(Assists, '\\*', '') %>% as.numeric(),
                                         Kills = str_replace_all(Kills, '\\*', '') %>% as.numeric(),
                                         Errors = str_replace_all(Errors, '\\*', '') %>% as.numeric(),
                                         `Total Attacks` = str_replace_all(`Total Attacks`, '\\*', '') %>% as.numeric(),
